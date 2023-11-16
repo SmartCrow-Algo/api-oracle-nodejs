@@ -31,22 +31,22 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getPropertyInfo = void 0;
-const nodeFetch = require('node-fetch');
+const axios_1 = __importDefault(require("axios"));
 const dotenv = __importStar(require("dotenv"));
 dotenv.config();
 const API_KEY = process.env.PROPERTY_API_KEY;
 function getPropertyInfo(propertyID) {
     return __awaiter(this, void 0, void 0, function* () {
         const url = `https://api.rentcast.io/v1/properties/${encodeURIComponent(propertyID)}`;
-        const options = {
-            method: 'GET',
-            headers: { accept: 'application/json', 'X-Api-Key': API_KEY },
-        };
+        const headers = { accept: 'application/json', 'X-Api-Key': API_KEY };
         try {
-            const response = yield nodeFetch(url, options);
-            const json = yield response.json();
+            const response = yield axios_1.default.get(url, { headers });
+            const json = response.data;
             if (json) {
                 const lastSaleDate = json.lastSaleDate;
                 const lastSalePrice = json.lastSalePrice;
